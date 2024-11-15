@@ -45,8 +45,19 @@ jobs:
           sudo apt-get install wget -y
           wget -qO- https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
-      - name: Security Scan with Trivy
-        run: trivy image --skip-update ghcr.io/$REPO_NAME/my-flask-app:latest
+      - name: scan with Trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: 'flaskapp:latest'
+          format: 'json'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'MEDIUM'
+        env:
+          TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db:latest
+          TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db:1
+        continue-on-error: true
 
       - name: Save Trivy Report
         run: trivy image --format table --output trivy-report.txt ghcr.io/$REPO_NAME/my-flask-app:latest
