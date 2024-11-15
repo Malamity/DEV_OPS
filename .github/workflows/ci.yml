@@ -32,19 +32,7 @@ jobs:
 
       - name: Test Docker image
         run: echo "Test"
-
-      - name: Cache Trivy DB
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/trivy
-          key: ${{ runner.os }}-trivy-db
-
-      - name: Install Trivy
-        run: |
-          sudo apt-get update
-          sudo apt-get install wget -y
-          wget -qO- https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
-
+        
       - name: scan with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
