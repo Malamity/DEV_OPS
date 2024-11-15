@@ -33,17 +33,21 @@ jobs:
       - name: Test Docker image
         run: echo "Test"
 
+      - name: Cache Trivy DB
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-trivy-db
+
       - name: Push Docker image
         run: docker push ghcr.io/$REPO_NAME/my-flask-app:latest
         if: github.ref == 'refs/heads/main'
 
       - name: Security Scan with Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: my-flask-app:latest
+        run: trivy image --skip-update ghcr.io/$REPO_NAME/my-flask-app:latest
 
       - name: Save Trivy Report
-        run: trivy image --format table --output trivy-report.txt my-flask-app:latest
+        run: trivy image --format table --output trivy-report.txt ghcr.io/$REPO_NAME/my-flask-app:latest
 
       - name: Upload Trivy Report
         uses: actions/upload-artifact@v3
