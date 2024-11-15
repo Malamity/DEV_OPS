@@ -14,6 +14,10 @@ def index():
 def new_feature():
     return 'This is a new feature!'
 
+@app.route('/new-feature2')
+def new_feature2():
+    return 'This is a new feature!(2)'
+
 @app.route('/weather')
 def get_weather():
     city = request.args.get('city')
