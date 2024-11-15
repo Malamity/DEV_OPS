@@ -39,9 +39,11 @@ jobs:
           path: ~/.cache/trivy
           key: ${{ runner.os }}-trivy-db
 
-      - name: Push Docker image
-        run: docker push ghcr.io/$REPO_NAME/my-flask-app:latest
-        if: github.ref == 'refs/heads/main'
+      - name: Install Trivy
+        run: |
+          sudo apt-get update
+          sudo apt-get install wget -y
+          wget -qO- https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
       - name: Security Scan with Trivy
         run: trivy image --skip-update ghcr.io/$REPO_NAME/my-flask-app:latest
