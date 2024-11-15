@@ -24,14 +24,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert repository name to lowercase
+        run: echo "REPO_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build Docker image
-        run: docker build -t my-flask-app .
+        run: docker build -t ghcr.io/$REPO_NAME/my-flask-app:latest .
 
       - name: Test Docker image
         run: echo "Test"
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/my-flask-app:latest
+        run: docker push ghcr.io/$REPO_NAME/my-flask-app:latest
         if: github.ref == 'refs/heads/main'
 
       - name: Security Scan with Trivy
