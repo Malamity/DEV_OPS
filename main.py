@@ -10,6 +10,9 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/new-feature')
+def new_feature():
+    return 'This is a new feature!'
 
 @app.route('/weather')
 def get_weather():
