@@ -10,13 +10,8 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/new-feature')
-def new_feature():
-    return 'This is a new feature!'
+# PULL REQUEST 1
 
-@app.route('/new-feature2')
-def new_feature2():
-    return 'This is a new feature!(2)'
 
 @app.route('/weather')
 def get_weather():
