@@ -14,6 +14,7 @@ def index():
 
 # PULL REQUEST 2
 
+
 @app.route('/weather')
 def get_weather():
     city = request.args.get('city')
